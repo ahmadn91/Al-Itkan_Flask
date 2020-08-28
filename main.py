@@ -1,6 +1,7 @@
-from flask import Flask,render_template,jsonify
-from flask import request
-import xmlrpc.client #if this didnt work , open terminal and write "python3 -m pip install xmlrpc.client"
+from flask import Flask,render_template,jsonify,request
+
+import xmlrpc.client 
+# if this didnt work , open terminal and write "python3 -m pip install xmlrpc.client"
 
 # python3 -m pip install flask
 #to start server, go to main dir,"python3 main.py"
@@ -12,10 +13,10 @@ headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 class Rec_Api():
 
     def __init__(self):
-        self.username ="" 
-        self.password =""
-        self.db ="" 
-        self.url ="" 
+        self.username ="admin" 
+        self.password ="admin"
+        self.db ="Al-Itkan" 
+        self.url ="http://localhost" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         self.uid = 0
@@ -26,7 +27,7 @@ class Rec_Api():
             self.uid = self.common.authenticate(self.db,self.username,self.password,{})
             return ("Logged in successfuly, user id :"+ str(self.uid))
         except Exception as s:
-            return self.exception_format(s)
+            return s
     
     def create_record(self,fields,module="hr.applicant",op_type="create"):
 
@@ -36,10 +37,10 @@ class Rec_Api():
                 return res
 
         except Exception as s:
-                return self.exception_format(s)
+                return s
 
 
-    def search_Record(self,domain,module="hr.applicatn",op_type="search",limit=1):
+    def search_record(self,domain,module="hr.applicatn",op_type="search",limit=1):
         
             try :
                 res=self.models.execute_kw(self.db, self.uid, self.password,
@@ -47,7 +48,7 @@ class Rec_Api():
                 return res
 
             except Exception as s:
-                return self.exception_format(s)
+                return s
 
 """
 @app.route("/home",methods=["GET","POST"])
@@ -63,10 +64,10 @@ def api_req():
         obj = Rec_Api()
         search_result = obj.search_record(limit=1,domain=[[["email_from","=",content["email_from"],["partner_phone","=",content["partner_phone"]]]]])
         if search_result:
-            return jsonify({status=Information already exists},headers=headers)
+            return jsonify({status:"Information already exists"},headers=headers)
         else:
-            obj.create_record(fields=contents)
-            return jsonify({status=Application Create successfully},headers=headers)
+            obj.create_record(fields=content)
+            return jsonify({status:"Application Created successfully"},headers=headers)
     else:
         pass
 
