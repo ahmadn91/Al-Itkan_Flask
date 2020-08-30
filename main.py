@@ -1,5 +1,5 @@
 from flask import Flask,render_template,jsonify,request
-
+import datetime as dt
 import xmlrpc.client 
 # if this didnt work , open terminal and write "python3 -m pip install xmlrpc.client"
 
@@ -20,8 +20,8 @@ class Rec_Api():
     def __init__(self):
         self.username ="admin" 
         self.password ="admin"
-        self.db ="Al-Itkan" 
-        self.url ="http://localhost:8069" 
+        self.db ="demo_data" 
+        self.url ="http://192.168.106.3:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         
@@ -69,6 +69,16 @@ def api_req():
         content = request.get_json()
         data=content["data"]
         files = content["files"]
+
+        data['name'] = 'fuck you'
+        # data["birthdate"] = datetime.strptime(data["birthdate"], "%Y-%m-%d").date()
+        if data.get('contact_disclaimer'):
+            data["contact_disclaimer"] = True if data["contact_disclaimer"] == 'yes' else False
+
+        # for key, value in files.items():
+        #     files[key] = str.encode(value).decode('ascii')
+
+        # print(data["birthdate"], type(data["birthdate"]))
         obj = Rec_Api()
         #search_result = obj.search_record(limit=1,domain=[[["email_from","=",data["email_from"],["partner_phone","=",data["partner_phone"]]]]])
         # if search_result !=0:
@@ -78,9 +88,13 @@ def api_req():
         #     return "already exists"
         # else:
         files["photo"] = str.encode(files["photo"]).decode('ascii')
-        print(files["photo"],type(files["photo"]))
-        #fieldss={**data,**files}
-        obj.create_record(fields={"name":"ahmed","photo":files["photo"]})
+        # print(files["photo"],type(files["photo"]))
+        # why = dt.date(1900,12,25)
+        # print(why ,type(why))
+        fields={**data,**files}
+        print(fields['photo'][:20] ,type(fields))
+        # obj.create_record(fields={'name': 'Shams', 'health_status': 'very poor'})
+        obj.create_record(fields=fields)
         #return jsonify({status:"Application Created successfully"},headers=headers)
         print("done")
         return "Done"
