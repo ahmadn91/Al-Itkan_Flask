@@ -20,8 +20,8 @@ class Rec_Api():
     def __init__(self):
         self.username ="admin" 
         self.password ="admin"
-        self.db ="demo_data" 
-        self.url ="http://192.168.106.3:8069" 
+        self.db ="Al-Itkan" 
+        self.url ="http://localhost:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         
@@ -66,51 +66,46 @@ def home():
 @app.route("/api",methods=["GET","POST"])
 def api_req():
     if request.method == "POST":
-        content = request.get_json()
-        data=content["data"]
-        files = content["files"]
-
-        data['name'] = 'fuck you'
-        # data["birthdate"] = datetime.strptime(data["birthdate"], "%Y-%m-%d").date()
-        if data.get('contact_disclaimer'):
-            data["contact_disclaimer"] = True if data["contact_disclaimer"] == 'yes' else False
-
-        # for key, value in files.items():
-        #     files[key] = str.encode(value).decode('ascii')
-
-        # print(data["birthdate"], type(data["birthdate"]))
-        obj = Rec_Api()
-        #search_result = obj.search_record(limit=1,domain=[[["email_from","=",data["email_from"],["partner_phone","=",data["partner_phone"]]]]])
-        # if search_result !=0:
-        #     #return jsonify({status:"Information already exists"},headers=headers)
-        #     print(search_result,type(search_result))
-        #     print("Not done")
-        #     return "already exists"
-        # else:
-        files["photo"] = str.encode(files["photo"]).decode('ascii')
-        # print(files["photo"],type(files["photo"]))
-        # why = dt.date(1900,12,25)
-        # print(why ,type(why))
-        fields={**data,**files}
-        print(fields['photo'][:20] ,type(fields))
-        # obj.create_record(fields={'name': 'Shams', 'health_status': 'very poor'})
-        obj.create_record(fields=fields)
-        #return jsonify({status:"Application Created successfully"},headers=headers)
-        print("done")
-        return "Done"
+        obj=Rec_Api()
+        if not obj.authenticate():
+            print("Authentication Failed, There is an issue with credentials")
+            return "Authentication Failed, There is an issue with credentials"
+        else:
+            content = request.get_json()
+            data=content["data"]
+            files=content["files"]
+            if len(files) > 0:
+                data["photo"] =str.encode(files["photo"]).decode('ascii')
+                data["national_id"] =str.encode(files["national_id"]).decode('ascii')
+                data["citizenship_cert"] =str.encode(files["citizenship_cert"]).decode('ascii')
+                data["accomodation_id"] =str.encode(files["accomodation_id"]).decode('ascii')
+                data["uni_degree"] =str.encode(files["uni_degree"]).decode('ascii')
+                data["medical"] =str.encode(files["medical"]).decode('ascii')
+                data["no_crim_req"] =str.encode(files["no_crim_req"]).decode('ascii')
+                data["letter_rec_1"] =str.encode(files["letter_rec_1"]).decode('ascii')
+                data["letter_rec_2"] =str.encode(files["letter_rec_2"]).decode('ascii')
+            print(data)
+            initial = obj.search_record(domain=[["partner_phone","=",data["partner_phone"]]])
+            if initial != []:
+                print ("Phone No. Already exists")
+                return "Phone No. Already exists"
+            else:
+                try:
+                    res=obj.create_record(fields=data)
+                    s_res=obj.search_record(domain=[["name","=",data["name"]]])
+                    if s_res != []:
+                        print("A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)) 
+                        return "A new record has been created successfully"
+                    else:
+                        print("Data sent successfully, but for some reason, record was not created" + res)
+                        return "Data sent successfully, but for some reason, record was not created"
+                except Exception as s:
+                    print(s)
+                    return s
     else:
-        pass
+        return "Nominal"
 
-"""
 
-@app.route("/test",methods=["GET","POST"])
-
-def test():
-    if request.method == "POST":
-        return request
-
-    return render_template("test.html")
-"""
     
 
 if __name__ == "__main__":
