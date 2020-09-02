@@ -105,8 +105,21 @@ def api_req():
     else:
         return "Nominal"
 
-
-    
+@app.route("/api/get")
+def get_jobs():
+    if request.method == "GET":
+        jobs = {"Engineer":{
+            "description":"system engineer",
+            "dead_line":"2021"
+        },"accountant":{
+            "description":"accountant",
+            "dead_line":"2022"
+        },"techncican":{
+            "description":"accountant",
+            "dead_line":"2022"
+        }
+        }
+        return jsonify(jobs)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True) #localIP:5000, so the api call url should be "192.168.x.x:5000/api"
