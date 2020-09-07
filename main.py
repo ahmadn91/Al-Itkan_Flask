@@ -55,6 +55,15 @@ class Rec_Api():
 
             except Exception as s:
                 return s
+    def search_and_read(self,domain,fields,module="hr.job",op_type="search_read",limit=0):
+        
+            try :
+                res=self.models.execute_kw(self.db, self.authenticate(), self.password,
+                     module, op_type, [domain], {'limit': limit,'fields':fields})
+                return res
+
+            except Exception as s:
+                return s
 
 """
 @app.route("/home",methods=["GET","POST"])
@@ -108,18 +117,11 @@ def api_req():
 @app.route("/api/get")
 def get_jobs():
     if request.method == "GET":
-        jobs = {"Engineer":{
-            "description":"system engineer",
-            "dead_line":"2021"
-        },"accountant":{
-            "description":"accountant",
-            "dead_line":"2022"
-        },"techncican":{
-            "description":"accountant",
-            "dead_line":"2022"
-        }
-        }
-        return jsonify(jobs)
+        obj=Rec_Api()
+        obj.authenticate()
+        data = obj.search_and_read([["state","=","recruit"]],["name","description"])
+        print (data)
+        return jsonify(data)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True) #localIP:5000, so the api call url should be "192.168.x.x:5000/api"
