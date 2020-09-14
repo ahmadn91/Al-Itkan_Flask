@@ -1,6 +1,9 @@
 from flask import Flask,render_template,jsonify,request
 import datetime as dt
-import xmlrpc.client 
+import xmlrpc.client
+import json
+from datetime import datetime
+from random import randint
 # if this didnt work , open terminal and write "python3 -m pip install xmlrpc.client"
 
 # python3 -m pip install flask
@@ -19,8 +22,8 @@ class Rec_Api():
 
     def __init__(self):
         self.username ="admin" 
-        self.password ="admin"
-        self.db ="Al-Itkan" 
+        self.password ="P@ssw0rd"
+        self.db ="ItkanIP" 
         self.url ="http://localhost:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
@@ -65,6 +68,8 @@ class Rec_Api():
             except Exception as s:
                 return s
 
+    
+
 """
 @app.route("/home",methods=["GET","POST"])
 def home():
@@ -72,9 +77,24 @@ def home():
     return render_template("home.html")
 """
 
+
+
+
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return randint(range_start, range_end)
+
+
+
+
+
+
+
 @app.route("/api",methods=["GET","POST"])
 def api_req():
     if request.method == "POST":
+
         obj=Rec_Api()
         if not obj.authenticate():
             print("Authentication Failed, There is an issue with credentials")
@@ -83,34 +103,72 @@ def api_req():
             content = request.get_json()
             data=content["data"]
             files=content["files"]
-            if len(files) > 0:
+
+
+
+
+            if files.get("photo"):
                 data["photo"] =str.encode(files["photo"]).decode('ascii')
+
+            if files.get("national_id"):
                 data["national_id"] =str.encode(files["national_id"]).decode('ascii')
+
+            if files.get("citizenship_cert"):
                 data["citizenship_cert"] =str.encode(files["citizenship_cert"]).decode('ascii')
+
+            if files.get("accomodation_id"):
                 data["accomodation_id"] =str.encode(files["accomodation_id"]).decode('ascii')
+
+            if files.get("uni_degree"):
                 data["uni_degree"] =str.encode(files["uni_degree"]).decode('ascii')
+
+            if files.get("medical"):
                 data["medical"] =str.encode(files["medical"]).decode('ascii')
+
+            if files.get("no_crim_req"):
                 data["no_crim_req"] =str.encode(files["no_crim_req"]).decode('ascii')
+
+            if files.get("letter_rec_1"):
                 data["letter_rec_1"] =str.encode(files["letter_rec_1"]).decode('ascii')
+
+            if files.get("letter_rec_2"):
                 data["letter_rec_2"] =str.encode(files["letter_rec_2"]).decode('ascii')
-            print(data)
+
+            now = datetime.now()
+            date_time = now.strftime("%Y-%m-%d-%H:%M:%S")
+    
+            strData = json.dumps(data, indent=4)
+
             initial = obj.search_record(domain=[["partner_phone","=",data["partner_phone"]]])
             if initial != []:
                 print ("Phone No. Already exists")
                 return "Phone No. Already exists"
             else:
                 try:
+                    ref=str(random_with_N_digits(8))
+                    data["external_ref"] = ref
                     res=obj.create_record(fields=data)
                     s_res=obj.search_record(domain=[["name","=",data["name"]]])
                     if s_res != []:
-                        print("A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)) 
-                        return "A new record has been created successfully"
+                        success_massage = "A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)
+                        with open("./logs/%s" % (date_time), "w") as logFile:
+                            logFile.write(success_massage + "\n\n" + strData)
+                        print(success_massage)
+                        return ref
                     else:
-                        print("Data sent successfully, but for some reason, record was not created" + res)
+
+                        failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
+                        with open("./logs/%s" % (date_time), "w") as logFile:
+                            logFile.write(failure_massage + "\n\n" + strData)
+                        print(failure_massage)
                         return "Data sent successfully, but for some reason, record was not created"
+
                 except Exception as s:
-                    print(s)
-                    return s
+                    exception_massage = "error Exception message :) => " + str(s)
+                    with open("./logs/%s" % (date_time), "w") as logFile:
+                        logFile.write(exception_massage + "\n\n" + strData)
+                    print(exception_massage)
+                    return str(s)
     else:
         return "Nominal"
 
@@ -119,7 +177,7 @@ def get_jobs():
     if request.method == "GET":
         obj=Rec_Api()
         obj.authenticate()
-        data = obj.search_and_read([["state","=","recruit"]],["name","description"])
+        data = obj.search_and_read([["state","=","recruit"]],["name","description","opening_date"])
         print (data)
         return jsonify(data)
 

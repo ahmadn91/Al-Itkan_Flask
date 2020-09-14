@@ -1,0 +1,26 @@
+A new record has been created successfully, Record ID is :16,[16]
+
+{
+    "social_status": "single",
+    "ar_r": 7,
+    "ar_w": 7,
+    "ar_s": 7,
+    "ar_u": 7,
+    "ar_o": 7,
+    "en_r": 7,
+    "en_w": 7,
+    "en_s": 7,
+    "en_u": 7,
+    "en_o": 7,
+    "name": "Naseem",
+    "surname": "asdasdas",
+    "email_from": "asdasdasd",
+    "partner_phone": "sadsa",
+    "address": "sdadasd",
+    "hai": "asdasdasds",
+    "sec": "asdasd",
+    "team_work": "excellent",
+    "pressure": "excellent",
+    "travel": "excellent",
+    "referral_source": "walk-in"
+}

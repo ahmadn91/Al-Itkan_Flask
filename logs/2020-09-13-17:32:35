@@ -1,0 +1,27 @@
+A new record has been created successfully, Record ID is :17,[17]
+
+{
+    "job_id": 5,
+    "social_status": "single",
+    "ar_r": 7,
+    "ar_w": 7,
+    "ar_s": 7,
+    "ar_u": 7,
+    "ar_o": 7,
+    "en_r": 7,
+    "en_w": 7,
+    "en_s": 7,
+    "en_u": 7,
+    "en_o": 7,
+    "name": "Ahmed Naseem",
+    "surname": "Majeed",
+    "email_from": "ahmedn@test.com",
+    "partner_phone": "48573495345",
+    "address": "asdasdas",
+    "hai": "dasd",
+    "sec": "asdasdasd",
+    "team_work": "excellent",
+    "pressure": "excellent",
+    "travel": "excellent",
+    "referral_source": "walk-in"
+}

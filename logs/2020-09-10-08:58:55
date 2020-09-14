@@ -1,0 +1,28 @@
+A new record has been created successfully, Record ID is :12,[12]
+
+{
+    "job_id": 2,
+    "social_status": "divorced",
+    "ar_r": 7,
+    "ar_w": 7,
+    "ar_s": 7,
+    "ar_u": 7,
+    "ar_o": 7,
+    "en_r": 7,
+    "en_w": 7,
+    "en_s": 7,
+    "en_u": 7,
+    "en_o": 7,
+    "name": "dasd",
+    "surname": "asfdafd",
+    "email_from": "asdfa",
+    "partner_phone": "051351",
+    "health_status": "very poor",
+    "team_work": "poor",
+    "pressure": "good",
+    "travel": "excellent",
+    "referral_source": "linked-in",
+    "preffered_fow": "administration",
+    "preferred_cp": "10 years",
+    "smoking": "yes"
+}
