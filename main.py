@@ -189,10 +189,14 @@ def get_check():
         obj=Rec_Api()
         content = request.get_json()
         external_ref = content["ref"]
-        
         response = obj.search_and_read([["external_ref","=",external_ref]],["stage_id"],limit=1,module="hr.applicant")
-        response = {"id":response[0]["stage_id"][0],"msg":response[0]["stage_id"][1]}
-        return jsonify(response)
+        if response:
+            response = {"id":response[0]["stage_id"][0],"msg":response[0]["stage_id"][1]}
+
+            return jsonify(response)
+        else:
+            res={"id":"empty","msg":"Sorry, There is no such application in the system"}
+            return jsonify(res)
         
 
 if __name__ == "__main__":
