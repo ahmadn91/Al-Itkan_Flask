@@ -9,6 +9,8 @@ from random import randint
 # python3 -m pip install flask
 #to start server, go to main dir,"python3 main.py"
 
+
+
 from flask_cors import CORS, cross_origin
 
 
@@ -24,7 +26,7 @@ class Rec_Api():
         self.username ="admin" 
         self.password ="P@ssw0rd"
         self.db ="ItkanIP" 
-        self.url ="http://localhost:8069" 
+        self.url ="http://erp.alitkan.com:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         
@@ -180,6 +182,18 @@ def get_jobs():
         data = obj.search_and_read([["state","=","recruit"]],["name","description","opening_date"])
         print (data)
         return jsonify(data)
+
+@app.route("/api/check",methods=["POST"])
+def get_check():
+    if request.method == "POST":
+        obj=Rec_Api()
+        content = request.get_json()
+        external_ref = content["ref"]
+        
+        response = obj.search_and_read([["external_ref","=",external_ref]],["stage_id"],limit=1,module="hr.applicant")
+        response = {"id":response[0]["stage_id"][0],"msg":response[0]["stage_id"][1]}
+        return jsonify(response)
+        
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True) #localIP:5000, so the api call url should be "192.168.x.x:5000/api"
