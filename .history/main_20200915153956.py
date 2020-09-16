@@ -26,7 +26,7 @@ class Rec_Api():
         self.username ="admin" 
         self.password ="P@ssw0rd"
         self.db ="ItkanIP" 
-        self.url ="http://191.101.164.149:8069" 
+        self.url ="http://191.101.164.194:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         
@@ -189,18 +189,15 @@ def get_check():
         obj=Rec_Api()
         content = request.get_json()
         external_ref = content["ref"]
-        if len(external_ref) == 8:
-            response = obj.search_and_read([["external_ref","=",external_ref]],["stage_id"],limit=1,module="hr.applicant")
-            if response:
-                response = {"id":response[0]["stage_id"][0],"msg":response[0]["stage_id"][1]}
+        response = obj.search_and_read([["external_ref","=",external_ref]],["stage_id"],limit=1,module="hr.applicant")
+        if response:
+            response = {"id":response[0]["stage_id"][0],"msg":response[0]["stage_id"][1]}
 
-                return jsonify(response)
-            else:
-                res={"id":"empty","msg":"Sorry, There is no such application in the system"}
-                return jsonify(res)
+            return jsonify(response)
         else:
-            res={"id":"empty","msg":"Wrong Format, Please enter the 8 digits application refernce number "}
-            return res
+            res={"id":"empty","msg":"Sorry, There is no such application in the system"}
+            return jsonify(res)
+        
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True) #localIP:5000, so the api call url should be "192.168.x.x:5000/api"
