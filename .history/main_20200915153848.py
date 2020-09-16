@@ -26,7 +26,7 @@ class Rec_Api():
         self.username ="admin" 
         self.password ="P@ssw0rd"
         self.db ="ItkanIP" 
-        self.url ="http://191.101.164.149:8069" 
+        self.url ="https://erp.alitkan.com:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         

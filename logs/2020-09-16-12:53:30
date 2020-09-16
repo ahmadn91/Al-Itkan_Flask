@@ -1,0 +1,24 @@
+A new record has been created successfully, Record ID is :73,[73]
+
+{
+    "job_id": 5,
+    "social_status": "single",
+    "ar_r": 7,
+    "ar_w": 7,
+    "ar_s": 7,
+    "ar_u": 7,
+    "ar_o": 7,
+    "en_r": 7,
+    "en_w": 7,
+    "en_s": 7,
+    "en_u": 7,
+    "en_o": 7,
+    "name": "edit jobs page desgin ",
+    "surname": "dflgkd;lj",
+    "email_from": "dfl/gjdlk",
+    "partner_phone": "9876",
+    "team_work": "excellent",
+    "pressure": "excellent",
+    "travel": "excellent",
+    "referral_source": "walk-in"
+}
