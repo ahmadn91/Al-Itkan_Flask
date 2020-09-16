@@ -201,6 +201,7 @@ def get_check():
         else:
             res={"id":"empty","msg":"Wrong Format, Please enter the 8 digits application refernce number "}
             return res
+            
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True) #localIP:5000, so the api call url should be "192.168.x.x:5000/api"
