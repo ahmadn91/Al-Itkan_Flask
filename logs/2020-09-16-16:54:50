@@ -1,0 +1,25 @@
+A new record has been created successfully, Record ID is :90,[90]
+
+{
+    "job_id": 5,
+    "social_status": "single",
+    "ar_r": 7,
+    "ar_w": 7,
+    "ar_s": 7,
+    "ar_u": 7,
+    "ar_o": 7,
+    "en_r": 7,
+    "en_w": 7,
+    "en_s": 7,
+    "en_u": 7,
+    "en_o": 7,
+    "name": "weaweaweawe",
+    "surname": "aweawewe4",
+    "email_from": "aweweaw",
+    "skype_id": "aweaweaweawe",
+    "partner_phone": "aweawewaewe",
+    "team_work": "excellent",
+    "pressure": "excellent",
+    "travel": "excellent",
+    "referral_source": "walk-in"
+}

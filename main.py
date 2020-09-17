@@ -4,6 +4,7 @@ import xmlrpc.client
 import json
 from datetime import datetime
 from random import randint
+#import base64
 # if this didnt work , open terminal and write "python3 -m pip install xmlrpc.client"
 
 # python3 -m pip install flask
@@ -105,6 +106,8 @@ def api_req():
             content = request.get_json()
             data=content["data"]
             files=content["files"]
+            
+            
 
 
 
@@ -149,6 +152,7 @@ def api_req():
                 try:
                     ref=str(random_with_N_digits(8))
                     data["external_ref"] = ref
+                    
                     res=obj.create_record(fields=data)
                     s_res=obj.search_record(domain=[["name","=",data["name"]]])
                     if s_res != []:
@@ -179,7 +183,7 @@ def get_jobs():
     if request.method == "GET":
         obj=Rec_Api()
         obj.authenticate()
-        data = obj.search_and_read([["state","=","recruit"]],["name","description","opening_date"])
+        data = obj.search_and_read([["state","=","recruit"]],["name","description","opening_date","card_image"])
         print (data)
         return jsonify(data)
 

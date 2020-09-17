@@ -1,0 +1,26 @@
+A new record has been created successfully, Record ID is :96,[96]
+
+{
+    "job_id": 5,
+    "social_status": "single",
+    "ar_r": 7,
+    "ar_w": 7,
+    "ar_s": 7,
+    "ar_u": 7,
+    "ar_o": 7,
+    "en_r": 7,
+    "en_w": 7,
+    "en_s": 7,
+    "en_u": 7,
+    "en_o": 7,
+    "name": "sadaweawe",
+    "surname": "aweaseease",
+    "email_from": "aweawea",
+    "skype_id": "e343a",
+    "partner_phone": "4a34a34a343",
+    "team_work": "excellent",
+    "pressure": "excellent",
+    "travel": "excellent",
+    "referral_source": "walk-in",
+    "filling_time": "0:3"
+}
