@@ -24,8 +24,8 @@ headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 class Rec_Api():
 
     def __init__(self):
-        self.username ="admin" 
-        self.password ="P@ssw0rd"
+        self.username ="apibot" 
+        self.password ="ArxTuOpp_11@3"
         self.db ="ItkanIP" 
         self.url ="http://191.101.164.149:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
