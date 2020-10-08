@@ -183,7 +183,7 @@ def get_jobs():
     if request.method == "GET":
         obj=Rec_Api()
         obj.authenticate()
-        data = obj.search_and_read([[1,'=',1]],["name", "description", "opening_date", 'state', "card_image"])
+        data = obj.search_and_read([[1,'=',1]],["name", "description", "opening_date", 'state', "card_image", "city"])
         print (data)
         return jsonify(data)
 
