@@ -24,10 +24,10 @@ headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 class Rec_Api():
 
     def __init__(self):
-        self.username ="apibot" 
-        self.password ="ArxTuOpp_11@3"
-        self.db ="ItkanIP" 
-        self.url ="http://191.101.164.149:8069" 
+        self.username ="admin" 
+        self.password ="admin"
+        self.db ="Al-Itkan" 
+        self.url ="http://localhost:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         
@@ -205,6 +205,46 @@ def get_check():
         else:
             res={"id":"empty","msg":"Wrong Format, Please enter the 8 digits application refernce number "}
             return res
+
+#added today
+@app.route("/api/helpdesk",methods=["POST"])
+def helpdesk():
+    if request.method == "POST":
+        content = request.get_json()
+        data=content["data"]
+        obj=Rec_Api()
+        if content["files"]:
+            data["uploaded_file"] = str.encode(content["files"]["Attachment"]).decode('ascii')
+        if not obj.authenticate():
+            print("Authentication Failed, There is an issue with credentials")
+            return "Authentication Failed, There is an issue with credentials"
+        else:
+            try:
+                res=obj.create_record(fields=data,module="helpdesk.ticket")
+                #s_res=obj.search_record(module="helpdesk.ticket",domain=[["partner_email","=",data["partner_name"]]],limit=1)
+                if res:
+                    success_message = "A new record has been created successfully" + "record ID is :" + str(res)
+                    print(success_message) 
+                    return jsonify({"state":"created successfully"})
+                    
+                else:
+
+                    failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
+                    
+                    print(failure_massage)
+                    return jsonify({"state":"Not created Successfully"})
+
+            except Exception as s:
+                exception_massage = "error Exception message :) => " + str(s)
+                print(exception_massage)
+                return str(s)
+            
+    else:
+        return "Nominal"
+
+#end of added today
+
+
             
 
 if __name__ == "__main__":
