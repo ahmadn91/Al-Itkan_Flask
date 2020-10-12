@@ -26,8 +26,8 @@ class Rec_Api():
     def __init__(self):
         self.username ="admin" 
         self.password ="admin"
-        self.db ="Al-Itkan" 
-        self.url ="http://localhost:8069" 
+        self.db ="demo_2" 
+        self.url ="http://192.168.106.3:8069" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
         
@@ -217,7 +217,8 @@ def helpdesk():
             data["uploaded_file"] = str.encode(content["files"]["Attachment"]).decode('ascii')
         if not obj.authenticate():
             print("Authentication Failed, There is an issue with credentials")
-            return "Authentication Failed, There is an issue with credentials"
+            return jsonify({"created": False, 
+                "message": "Authentication Failed, There is an issue with credentials"})
         else:
             try:
                 res=obj.create_record(fields=data,module="helpdesk.ticket")
@@ -225,14 +226,16 @@ def helpdesk():
                 if res:
                     success_message = "A new record has been created successfully" + "record ID is :" + str(res)
                     print(success_message) 
-                    return jsonify({"state":"created successfully"})
+                    return jsonify({"created": True,
+                        "message":"created successfully"})
                     
                 else:
 
                     failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
                     
                     print(failure_massage)
-                    return jsonify({"state":"Not created Successfully"})
+                    return jsonify({"created": False,
+                        "message":"Not created Successfully"})
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
