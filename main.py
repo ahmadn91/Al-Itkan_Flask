@@ -157,21 +157,21 @@ def api_req():
                 s_res=obj.search_record(domain=[["name","=",data["name"]]])
                 if s_res != []:
                     success_massage = "A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)
-                    with open("/tmp/flask_logs/%s" % (date_time), "w") as logFile:
+                    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
                         logFile.write(success_massage + "\n\n" + strData)
                     print(success_massage)
                     return ref
                 else:
 
                     failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
-                    with open("/tmp/flask_logs/%s" % (date_time), "w") as logFile:
+                    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
                         logFile.write(failure_massage + "\n\n" + strData)
                     print(failure_massage)
                     return "Data sent successfully, but for some reason, record was not created"
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
-                with open("/tmp/flask_logs/%s" % (date_time), "w") as logFile:
+                with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
                     logFile.write(exception_massage + "\n\n" + strData)
                 print(exception_massage)
                 return str(s)
