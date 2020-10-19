@@ -71,6 +71,15 @@ class Rec_Api():
             except Exception as s:
                 return s
 
+    def read_record(self, ids, fields, module="hr.applicant", op_type="read"):
+            try :
+                res = self.models.execute_kw(self.db, self.uid, self.password, module, op_type,
+                    ids, {'fields': fields})
+                return res
+
+            except Exception as s:
+                return s
+
     
 
 """
@@ -266,6 +275,23 @@ def helpdesk():
         return "Nominal"
 
 #end of added today
+
+@app.route("/api/description",methods=["GET"])
+def description():
+    try:
+        job_id = request.args.get("job_id")
+        obj=Rec_Api()
+        obj.authenticate()
+        rec=obj.read_record(module="hr.job",ids=[int(job_id)],fields=["name"])
+        
+        if rec:
+            return jsonify({"found":True,"job":rec[0]})
+        else:
+            return jsonify({"found":False})
+        
+    except Exception as s:
+        return str(s)
+
 
 
             
