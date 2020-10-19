@@ -167,7 +167,10 @@ def api_req():
 
             if files.get("letter_rec_2"):
                 data["letter_rec_2"] =str.encode(files["letter_rec_2"]).decode('ascii')
-
+            
+            if files.get("cv"):
+                data["cv"] = str.encode(files["cv"]).decode('ascii')
+                
             now = datetime.now()
             date_time = now.strftime("%Y-%m-%d-%H:%M:%S")
     
