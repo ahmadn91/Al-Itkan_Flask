@@ -1,5 +1,4 @@
 from flask import Flask,render_template,jsonify,request
-import datetime as dt
 import xmlrpc.client
 import json
 from datetime import datetime
@@ -115,28 +114,28 @@ def api_req():
             content = request.get_json()
             data=content["data"]
             files=content["files"]
-            if data.get("birthdate"):
-                data["birthdate"] = datetime.datetime.strptime(data["birthdate"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("driver_license_date"):
-                data["driver_license_date"] = datetime.datetime.strptime(data["driver_license_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("from_date"):
-                data["from_date"] = datetime.datetime.strptime(data["from_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("from_date_0"):
-                data["from_date_0"] = datetime.datetime.strptime(data["from_date_0"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("from_date_1"):
-                data["from_date_1"] = datetime.datetime.strptime(data["from_date_1"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("sig_date"):
-                data["sig_date"] = datetime.datetime.strptime(data["sig_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("start_date"):
-                data["start_date"] = datetime.datetime.strptime(data["start_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("to_date"):
-                data["to_date"] = datetime.datetime.strptime(data["to_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("to_date_0"):
-                data["to_date_0"] = datetime.datetime.strptime(data["to_date_0"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("to_date_1"):
-                data["to_date_1"] = datetime.datetime.strptime(data["to_date_1"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
-            if data.get("union_member_date"):
-                data["union_member_date"] = datetime.datetime.strptime(data["union_member_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("birthdate"):
+            #     data["birthdate"] = datetime.strptime(data["birthdate"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("driver_license_date"):
+            #     data["driver_license_date"] = datetime.strptime(data["driver_license_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("from_date"):
+            #     data["from_date"] = datetime.strptime(data["from_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("from_date_0"):
+            #     data["from_date_0"] = datetime.strptime(data["from_date_0"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("from_date_1"):
+            #     data["from_date_1"] = datetime.strptime(data["from_date_1"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("sig_date"):
+            #     data["sig_date"] = datetime.strptime(data["sig_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("start_date"):
+            #     data["start_date"] = datetime.strptime(data["start_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("to_date"):
+            #     data["to_date"] = datetime.strptime(data["to_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("to_date_0"):
+            #     data["to_date_0"] = datetime.strptime(data["to_date_0"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("to_date_1"):
+            #     data["to_date_1"] = datetime.strptime(data["to_date_1"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            # if data.get("union_member_date"):
+            #     data["union_member_date"] = datetime.strptime(data["union_member_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
 
 
 
@@ -196,14 +195,14 @@ def api_req():
                 else:
 
                     failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
-                    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
+                    with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
                         logFile.write(failure_massage + "\n\n" + strData)
                     print(failure_massage)
                     return "Data sent successfully, but for some reason, record was not created"
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
-                with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
+                with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
                     logFile.write(exception_massage + "\n\n" + strData)
                 print(exception_massage)
                 return str(s)
