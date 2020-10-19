@@ -106,8 +106,28 @@ def api_req():
             content = request.get_json()
             data=content["data"]
             files=content["files"]
-            
-            
+            if data.get("birthdate"):
+                data["birthdate"] = datetime.datetime.strptime(data["birthdate"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("driver_license_date"):
+                data["driver_license_date"] = datetime.datetime.strptime(data["driver_license_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("from_date"):
+                data["from_date"] = datetime.datetime.strptime(data["from_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("from_date_0"):
+                data["from_date_0"] = datetime.datetime.strptime(data["from_date_0"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("from_date_1"):
+                data["from_date_1"] = datetime.datetime.strptime(data["from_date_1"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("sig_date"):
+                data["sig_date"] = datetime.datetime.strptime(data["sig_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("start_date"):
+                data["start_date"] = datetime.datetime.strptime(data["start_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("to_date"):
+                data["to_date"] = datetime.datetime.strptime(data["to_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("to_date_0"):
+                data["to_date_0"] = datetime.datetime.strptime(data["to_date_0"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("to_date_1"):
+                data["to_date_1"] = datetime.datetime.strptime(data["to_date_1"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
+            if data.get("union_member_date"):
+                data["union_member_date"] = datetime.datetime.strptime(data["union_member_date"],"%d/%m/%Y").date().strftime("%Y-%m-%d")
 
 
 
