@@ -284,7 +284,10 @@ def description():
         job_id = request.args.get("job_id")
         obj=Rec_Api()
         obj.authenticate()
-        rec=obj.read_record(module="hr.job",ids=[int(job_id)],fields=["name"])
+        rec=obj.read_record(module="hr.job",ids=[int(job_id)],
+            fields=["name", "city", "type_of_position", "technical_knowledge",
+            "behavioral_competencies", "education_language_requirements", "notes",
+            "department_id"])
         
         if rec:
             return jsonify({"found":True,"job":rec[0]})
