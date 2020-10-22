@@ -189,21 +189,21 @@ def api_req():
                 if s_res != []:
                     success_massage = "A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)
                     with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
-                        logFile.write(success_massage + "\n\n" + strData)
+                        logFile.write("Recuitment\n" + success_massage + "\n\n" + strData)
                     print(success_massage)
                     return ref
                 else:
 
-                    failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
+                    failure_massage = "Something went wrong when trying to submit your form. Please try again later" + str(res)
                     with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
-                        logFile.write(failure_massage + "\n\n" + strData)
+                        logFile.write("Recuitment\n" + failure_massage + "\n\n" + strData)
                     print(failure_massage)
-                    return "Data sent successfully, but for some reason, record was not created"
+                    return "Something went wrong when trying to submit your form. Please try again later"
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
                 with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
-                    logFile.write(exception_massage + "\n\n" + strData)
+                    logFile.write("Recuitment\n" + exception_massage + "\n\n" + strData)
                 print(exception_massage)
                 return str(s)
     else:
@@ -244,26 +244,44 @@ def helpdesk():
         content = request.get_json()
         data=content["data"]
         obj=Rec_Api()
+            
         if content["files"]:
             data["uploaded_file"] = str.encode(content["files"]["Attachment"]).decode('ascii')
+
         if not obj.authenticate():
             print("Authentication Failed, There is an issue with credentials")
             return jsonify({"created": False, 
                 "message": "Authentication Failed, There is an issue with credentials"})
+
         else:
             try:
+                search_res = obj.search_record(module="res.partner",domain=[("partner_email","=",data["partner_email"])],limit=1)
+                if search_res:
+                    data['partner_id'] = search_res
+                else:
+                    contract_res = obj.create_record({'name': data['partner_name'], 'email': data['partner_email']})
+                    data['partner_id'] = contract_res
+
+                del data['partner_name']
+
                 res=obj.create_record(fields=data,module="helpdesk.ticket")
-                #s_res=obj.search_record(module="helpdesk.ticket",domain=[["partner_email","=",data["partner_name"]]],limit=1)
                 if res:
                     success_message = "A new record has been created successfully" + "record ID is :" + str(res)
+
+                    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
+                        logFile.write("HelpDesk\n" + success_message + "\n\n" + str(res))
+
                     print(success_message) 
                     return jsonify({"created": True,
                         "message":"created successfully"})
                     
                 else:
 
-                    failure_massage = "Data sent successfully, but for some reason, record was not created" + str(res)
-                    
+                    failure_massage = "Something went wrong when trying to submit your ticket. Please try again later" + str(res)
+
+                    with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
+                        logFile.write("HelpDesk\n" + failure_massage + "\n\n" + str(res))
+
                     print(failure_massage)
                     return jsonify({"created": False,
                         "message":"Not created Successfully"})
@@ -271,7 +289,12 @@ def helpdesk():
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
                 print(exception_massage)
-                return str(s)
+
+                with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
+                    logFile.write("HelpDesk\n" + exception_massage + "\n\n" + str(s))
+
+                return jsonify({"created": False,
+                    "message":"Not created Successfully"})
             
     else:
         return "Nominal"
