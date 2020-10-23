@@ -191,7 +191,7 @@ def api_req():
                     with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
                         logFile.write("Recuitment\n" + success_massage + "\n\n" + strData)
                     print(success_massage)
-                    return jsonify({"created": False, "ref": ref})
+                    return jsonify({"created": True, "ref": ref})
 
                 else:
                     failure_massage = "Something went wrong when trying to submit your form. Please try again later" + str(res)
