@@ -302,7 +302,7 @@ def description():
         rec=obj.read_record(module="hr.job",ids=[int(job_id)],
             fields=["name", "city", "type_of_position", "technical_knowledge",
             "behavioral_competencies", "education_language_requirements", "notes",
-            "department_id"])
+            "department_id", "description", "state"])
         
         if rec:
             return jsonify({"found":True,"job":rec[0]})
