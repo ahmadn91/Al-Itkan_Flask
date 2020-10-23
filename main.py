@@ -191,21 +191,21 @@ def api_req():
                     with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
                         logFile.write("Recuitment\n" + success_massage + "\n\n" + strData)
                     print(success_massage)
-                    return ref
-                else:
+                    return jsonify({"created": False, "ref": ref})
 
+                else:
                     failure_massage = "Something went wrong when trying to submit your form. Please try again later" + str(res)
                     with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
                         logFile.write("Recuitment\n" + failure_massage + "\n\n" + strData)
                     print(failure_massage)
-                    return "Something went wrong when trying to submit your form. Please try again later"
+                    return jsonify({"created": False})
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
                 with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
                     logFile.write("Recuitment\n" + exception_massage + "\n\n" + strData)
                 print(exception_massage)
-                return str(s)
+                return jsonify({"created": False})
     else:
         return "Nominal"
 
@@ -255,14 +255,6 @@ def helpdesk():
 
         else:
             try:
-                search_res = obj.search_record(module="res.partner",domain=[("partner_email","=",data["partner_email"])],limit=1)
-                if search_res:
-                    data['partner_id'] = search_res
-                else:
-                    contract_res = obj.create_record({'name': data['partner_name'], 'email': data['partner_email']})
-                    data['partner_id'] = contract_res
-
-                del data['partner_name']
 
                 res=obj.create_record(fields=data,module="helpdesk.ticket")
                 if res:
