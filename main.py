@@ -246,7 +246,7 @@ def helpdesk():
         obj=Rec_Api()
             
         if content["files"]:
-            data["uploaded_file"] = str.encode(content["files"]["Attachment"]).decode('ascii')
+            data["uploaded_file"] = str.encode(content["files"]["attachment"]).decode('ascii')
 
         if not obj.authenticate():
             print("Authentication Failed, There is an issue with credentials")
@@ -254,6 +254,9 @@ def helpdesk():
                 "message": "Authentication Failed, There is an issue with credentials"})
 
         else:
+            now = datetime.now()
+            date_time = now.strftime("%Y-%m-%d-%H:%M:%S")
+
             try:
 
                 res=obj.create_record(fields=data,module="helpdesk.ticket")
