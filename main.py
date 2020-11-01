@@ -200,9 +200,10 @@ def get_jobs():
     if request.method == "GET":
         obj=Rec_Api()
         obj.authenticate()
-        data = obj.search_and_read([[1,'=',1]],["name", "description", "opening_date", 'state', "card_image", "city"])
-        print (data)
-        return jsonify(data)
+        data = obj.search_and_read([[1,'=',1]],["name", "description", "opening_date", 'state', "card_image", "city", "private_job"])
+        public_jobs = list( filter(lambda a: a['private_job'] == False, data) )
+        # print (public_jobs)
+        return jsonify(public_jobs)
 
 @app.route("/api/check",methods=["POST"])
 def get_check():
