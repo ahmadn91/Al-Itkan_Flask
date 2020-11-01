@@ -79,16 +79,6 @@ class Rec_Api():
             except Exception as s:
                 return s
 
-    
-
-"""
-@app.route("/home",methods=["GET","POST"])
-def home():
-
-    return render_template("home.html")
-"""
-
-
 
 
 def random_with_N_digits(n):
@@ -96,8 +86,12 @@ def random_with_N_digits(n):
     range_end = (10**n)-1
     return randint(range_start, range_end)
 
-
-
+def LOG(data, msg, page):
+    strData = json.dumps(data, indent=4)
+    now = datetime.now()
+    date_time = now.strftime("%Y-%m-%d-%H:%M:%S")
+    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
+        logFile.write(page + "\n" + msg + "\n\n" + strData)
 
 
 
@@ -169,11 +163,7 @@ def api_req():
             
             if files.get("cv"):
                 data["cv"] = str.encode(files["cv"]).decode('ascii')
-                
-            now = datetime.now()
-            date_time = now.strftime("%Y-%m-%d-%H:%M:%S")
-    
-            strData = json.dumps(data, indent=4)
+
 
 #            initial = obj.search_record(domain=[["partner_phone","=",data["partner_phone"]]])
 #            if initial != []:
@@ -188,22 +178,18 @@ def api_req():
                 s_res=obj.search_record(domain=[["name","=",data["name"]]])
                 if s_res != []:
                     success_massage = "A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)
-                    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
-                        logFile.write("Recuitment\n" + success_massage + "\n\n" + strData)
+                    LOG(data, success_massage, "Recruitment")
                     print(success_massage)
                     return jsonify({"created": True, "ref": ref})
 
                 else:
-                    failure_massage = "Something went wrong when trying to submit your form. Please try again later" + str(res)
-                    with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
-                        logFile.write("Recuitment\n" + failure_massage + "\n\n" + strData)
+                    LOG(data, failure_massage, "Recruitment")
                     print(failure_massage)
                     return jsonify({"created": False})
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
-                with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
-                    logFile.write("Recuitment\n" + exception_massage + "\n\n" + strData)
+                LOG(data, exception_massage, "Recruitment")
                 print(exception_massage)
                 return jsonify({"created": False})
     else:
@@ -263,8 +249,7 @@ def helpdesk():
                 if res:
                     success_message = "A new record has been created successfully" + "record ID is :" + str(res)
 
-                    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
-                        logFile.write("HelpDesk\n" + success_message + "\n\n" + str(res))
+                    LOG(data, success_message, "HelpDesk")
 
                     print(success_message) 
                     return jsonify({"created": True,
@@ -273,9 +258,7 @@ def helpdesk():
                 else:
 
                     failure_massage = "Something went wrong when trying to submit your ticket. Please try again later" + str(res)
-
-                    with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
-                        logFile.write("HelpDesk\n" + failure_massage + "\n\n" + str(res))
+                    LOG(data, failure_massage, "HelpDesk")
 
                     print(failure_massage)
                     return jsonify({"created": False,
@@ -283,11 +266,9 @@ def helpdesk():
 
             except Exception as s:
                 exception_massage = "error Exception message :) => " + str(s)
+                LOG(data, exception_massage, "HelpDesk")
+
                 print(exception_massage)
-
-                with open("/tmp/flask_logs_%s_fail" % (date_time), "w") as logFile:
-                    logFile.write("HelpDesk\n" + exception_massage + "\n\n" + str(s))
-
                 return jsonify({"created": False,
                     "message":"Not created Successfully"})
             
