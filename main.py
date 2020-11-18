@@ -174,6 +174,7 @@ def api_req():
                 ref=str(random_with_N_digits(8))
                 data["external_ref"] = ref
 
+                data.update({"partner_name": data["name"]})
                 res=obj.create_record(fields=data)
                 s_res=obj.search_record(domain=[["name","=",data["name"]]])
                 if s_res != []:
