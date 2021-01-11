@@ -25,7 +25,7 @@ class Rec_Api():
     def __init__(self):
         self.username ="apibot" 
         self.password ="ArxTuOpp_11@3"
-        self.db ="ItkanIP" 
+        self.db ="ItkanIP-new" 
         self.url ="https://erp.alitkan.com" 
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url)) 
