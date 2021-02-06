@@ -184,12 +184,13 @@ def api_req():
                     return jsonify({"created": True, "ref": ref})
 
                 else:
+                    failure_massage = "Error Code: 1243 - Something went wrong when trying to submit your ticket. Please try again later"
                     LOG(data, failure_massage, "Recruitment")
                     print(failure_massage)
                     return jsonify({"created": False})
 
             except Exception as s:
-                exception_massage = "error Exception message :) => " + str(s)
+                exception_massage = "Error Code: 9756 :) => " + str(s)
                 LOG(data, exception_massage, "Recruitment")
                 print(exception_massage)
                 return jsonify({"created": False})
