@@ -86,11 +86,12 @@ def random_with_N_digits(n):
     range_end = (10**n)-1
     return randint(range_start, range_end)
 
-def LOG(data, msg, page):
+def LOG(data, msg, page, failure=True):
     strData = json.dumps(data, indent=4)
     now = datetime.now()
     date_time = now.strftime("%Y-%m-%d-%H:%M:%S")
-    with open("/tmp/flask_logs_%s" % (date_time), "w") as logFile:
+    full_name = date_time + "_FAIL" if  failure else date_time
+    with open("/tmp/flask_logs_%s" % (full_name), "w") as logFile:
         logFile.write(page + "\n" + msg + "\n\n" + strData)
 
 
@@ -179,7 +180,7 @@ def api_req():
                 s_res=obj.search_record(domain=[["name","=",data["name"]]])
                 if s_res != []:
                     success_massage = "A new record has been created successfully" + ", Record ID is :" + str(res) + "," + str(s_res)
-                    LOG(data, success_massage, "Recruitment")
+                    LOG(data, success_massage, "Recruitment", False)
                     print(success_massage)
                     return jsonify({"created": True, "ref": ref})
 
@@ -249,7 +250,7 @@ def helpdesk():
                 if res:
                     success_message = "A new record has been created successfully" + "record ID is :" + str(res)
 
-                    LOG(data, success_message, "HelpDesk")
+                    LOG(data, success_message, "HelpDesk", False)
 
                     print(success_message) 
                     return jsonify({"created": True,
